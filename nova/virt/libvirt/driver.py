@@ -3037,7 +3037,7 @@ class LibvirtDriver(driver.ComputeDriver):
     def _can_set_admin_password(self, image_meta):
 
         if CONF.libvirt.virt_type in ('kvm', 'qemu'):
-            if not image_meta.properties.get('hw_qemu_guest_agent', False):
+            if not image_meta.properties.get('hw_qemu_guest_agent', True):
                 raise exception.QemuGuestAgentNotEnabled()
         elif not CONF.libvirt.virt_type == 'parallels':
             raise exception.SetAdminPasswdNotSupported()
@@ -3086,7 +3086,7 @@ class LibvirtDriver(driver.ComputeDriver):
             raise exception.InstanceQuiesceNotSupported(
                 instance_id=instance.uuid)
 
-        if not image_meta.properties.get('hw_qemu_guest_agent', False):
+        if not image_meta.properties.get('hw_qemu_guest_agent', True):
             raise exception.QemuGuestAgentNotEnabled()
 
     def _requires_quiesce(self, image_meta):
@@ -5999,7 +5999,7 @@ class LibvirtDriver(driver.ComputeDriver):
 
     def _set_qemu_guest_agent(self, guest, flavor, instance, image_meta):
         # Enable qga only if the 'hw_qemu_guest_agent' is equal to yes
-        if image_meta.properties.get('hw_qemu_guest_agent', False):
+        if image_meta.properties.get('hw_qemu_guest_agent', True):
             # a virtio-serial controller is required for qga. If it is not
             # created explicitly, libvirt will do it by itself. But in case
             # of AMD SEV, any virtio device should use iommu driver, and
