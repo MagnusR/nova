@@ -5310,6 +5310,13 @@ class LibvirtDriver(driver.ComputeDriver):
             scsi_controller.model = hw_scsi_model
             scsi_controller.index = 0
             return scsi_controller
+        else:
+            hw_scsi_model = 'virtio-scsi'
+            scsi_controller = vconfig.LibvirtConfigGuestController()
+            scsi_controller.type = 'scsi'
+            scsi_controller.model = hw_scsi_model
+            scsi_controller.index = 0
+            return scsi_controller
 
     def _get_host_sysinfo_serial_hardware(self):
         """Get a UUID from the host hardware
